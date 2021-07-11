@@ -1,4 +1,4 @@
-package dev.manpreet.rpdtest.dto;
+package dev.manpreet.rpdtest.dto.xml;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import lombok.Data;
