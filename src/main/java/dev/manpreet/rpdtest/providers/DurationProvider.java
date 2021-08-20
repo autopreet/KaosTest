@@ -1,6 +1,6 @@
 package dev.manpreet.rpdtest.providers;
 
-public interface DurationProvider extends Provider {
+public interface DurationProvider {
 
     boolean stopTests();
 }
