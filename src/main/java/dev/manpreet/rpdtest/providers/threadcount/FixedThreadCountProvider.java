@@ -4,21 +4,14 @@ import dev.manpreet.rpdtest.providers.ThreadCountProvider;
 
 public class FixedThreadCountProvider implements ThreadCountProvider {
 
-    private final int pollFrequencySeconds;
     private final int threadCount;
 
-    public FixedThreadCountProvider(int pollFrequencySeconds, int threadCount) {
-        this.pollFrequencySeconds = pollFrequencySeconds;
+    public FixedThreadCountProvider(int threadCount) {
         this.threadCount = threadCount;
     }
 
     @Override
     public int getThreadCount() {
         return threadCount;
-    }
-
-    @Override
-    public int getPollFrequencySeconds() {
-        return pollFrequencySeconds;
     }
 }

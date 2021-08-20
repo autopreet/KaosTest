@@ -6,12 +6,10 @@ import java.util.concurrent.TimeUnit;
 
 public class FixedDurationProvider implements DurationProvider {
 
-    private final int pollFrequencySeconds;
     private long remainingSecs = -1;
     private long prevTime;
 
-    public FixedDurationProvider(int pollFrequencySeconds, int time, TimeUnit timeUnit) {
-        this.pollFrequencySeconds = pollFrequencySeconds;
+    public FixedDurationProvider(int time, TimeUnit timeUnit) {
         if (timeUnit.equals(TimeUnit.MICROSECONDS) || timeUnit.equals(TimeUnit.MILLISECONDS) || timeUnit.equals(TimeUnit.NANOSECONDS)) {
             throw new IllegalArgumentException("Time unit must be in seconds or a higher unit");
         }
@@ -23,11 +21,6 @@ public class FixedDurationProvider implements DurationProvider {
         remainingSecs = remainingSecs - (System.currentTimeMillis() - prevTime);
         prevTime = System.currentTimeMillis();
         return remainingSecs <= 0;
-    }
-
-    @Override
-    public int getPollFrequencySeconds() {
-        return pollFrequencySeconds;
     }
 
     public void setStartTime(int time, TimeUnit timeUnit) {
