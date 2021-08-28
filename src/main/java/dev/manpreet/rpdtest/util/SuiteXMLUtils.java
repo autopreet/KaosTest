@@ -1,6 +1,7 @@
 package dev.manpreet.rpdtest.util;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import dev.manpreet.rpdtest.RPDException;
 import dev.manpreet.rpdtest.dto.xml.Suite;
 import dev.manpreet.rpdtest.dto.xml.SuiteClass;
 import dev.manpreet.rpdtest.dto.xml.SuiteListener;
@@ -16,19 +17,23 @@ import java.util.stream.Collectors;
 public class SuiteXMLUtils {
 
     public static Suite deserializeSuiteXML(String xmlPath) {
+        if (xmlPath == null || xmlPath.isBlank()) {
+            log.error("Suite XML path is null or blank");
+            throw new RPDException("Suite XML path is null or blank");
+        }
         File xmlFile = new File(xmlPath);
         if (!(xmlFile.exists() && xmlFile.canRead())) {
             log.error("Cannot read provided XML at: " + xmlPath);
             log.error("File exists: " + xmlFile.exists());
             log.error("File is readble: " + xmlFile.canRead());
-            throw new RuntimeException("Cannot read provided XML at: " + xmlPath);
+            throw new RPDException("Cannot read provided XML at: " + xmlPath);
         }
         try {
             XmlMapper xmlMapper = new XmlMapper();
             return xmlMapper.readValue(xmlFile, Suite.class);
         } catch (IOException e) {
             log.error("Exception occurred while deserialising provided suite XML", e);
-            throw new RuntimeException("Cannot deserialize provided XML at: " + xmlPath);
+            throw new RPDException("Cannot deserialize provided XML at: " + xmlPath);
         }
     }
 
@@ -74,5 +79,11 @@ public class SuiteXMLUtils {
             }
         }
         return true;
+    }
+
+    public static List<String> getAllTestClasses(Suite suite) {
+        return suite.getTest().getClasses().getClasses().stream().
+                map(SuiteClass::getName).
+                collect(Collectors.toList());
     }
 }
