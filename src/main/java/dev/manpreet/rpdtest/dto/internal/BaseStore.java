@@ -47,4 +47,18 @@ public class BaseStore {
         skipCount++;
         incrementTotalCount(addedExecTime);
     }
+
+    @Override
+    public String toString() {
+        float passPct, failPct, skipPct;
+        passPct = (passCount * 100.0f) / totalCount;
+        failPct = (failCount * 100.0f) / totalCount;
+        skipPct = (skipCount * 100.0f) / totalCount;
+        StringBuilder result = new StringBuilder();
+        result.append("Total runs: " + totalCount + "\n");
+        result.append("\tPassed: " + passCount + " (" + passPct + "%)");
+        result.append("\tFailed: " + failCount + " (" + failPct + "%)");
+        result.append("\tSkipped: " + skipCount + " (" + skipPct + "%)");
+        return result.toString();
+    }
 }
