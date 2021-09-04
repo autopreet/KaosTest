@@ -1,6 +1,7 @@
 package dev.manpreet.rpdtest.dto.internal;
 
 import dev.manpreet.rpdtest.RPDException;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -13,8 +14,20 @@ public class RunnerStore extends BaseStore {
 
     private Map<String, TestStore> testStoreMap;
     private final int storeSize;
+    private static RunnerStore runnerStore;
 
-    public RunnerStore(List<String> tests) {
+    public static RunnerStore getRunnerStore(List<String> tests) {
+        if (runnerStore == null) {
+            runnerStore = new RunnerStore(tests);
+        }
+        return runnerStore;
+    }
+
+    public static RunnerStore getRunnerStore() {
+        return runnerStore;
+    }
+
+    private RunnerStore(List<String> tests) {
         testStoreMap = new HashMap<>();
         initTestStore(tests);
         storeSize = testStoreMap.size();
@@ -27,8 +40,10 @@ public class RunnerStore extends BaseStore {
         tests.forEach(eachTest -> testStoreMap.put(eachTest, new TestStore(eachTest)));
     }
 
-    public String getRandomTest() {
-        return new ArrayList<>(testStoreMap.keySet()).get(ThreadLocalRandom.current().nextInt(storeSize));
+    @SneakyThrows
+    public Class getRandomTest() {
+        String className = new ArrayList<>(testStoreMap.keySet()).get(ThreadLocalRandom.current().nextInt(storeSize));
+        return Class.forName(className);
     }
 
     public void addPassedTest(String testName, long addedExecTime) {
@@ -53,5 +68,9 @@ public class RunnerStore extends BaseStore {
         if (!testStoreMap.containsKey(testName)) {
             throw new RPDException("Invalid test name (" + testName + ") not found in store: " + StringUtils.join(testStoreMap.keySet()));
         }
+    }
+
+    public Map<String, TestStore> getTestStoreMap() {
+        return testStoreMap;
     }
 }

@@ -5,10 +5,12 @@ import dev.manpreet.rpdtest.RPDException;
 import dev.manpreet.rpdtest.dto.xml.Suite;
 import dev.manpreet.rpdtest.dto.xml.SuiteClass;
 import dev.manpreet.rpdtest.dto.xml.SuiteListener;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -85,5 +87,18 @@ public class SuiteXMLUtils {
         return suite.getTest().getClasses().getClasses().stream().
                 map(SuiteClass::getName).
                 collect(Collectors.toList());
+    }
+
+    public static List<String> getAllListenerClasses(Suite suite) {
+        return suite.getListeners().getListener().stream().
+                map(SuiteListener::getClassName).
+                collect(Collectors.toList());
+    }
+
+    @SneakyThrows
+    public static List<Class> getClassFromName(List<String> classNames) {
+        List<Class> classes = new ArrayList<>();
+        classNames.forEach(name -> classes.add(Class.forName(name)));
+        return classes;
     }
 }
