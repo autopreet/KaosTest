@@ -56,7 +56,7 @@ public class BaseStore {
         skipPct = (skipCount * 100.0f) / totalCount;
         StringBuilder result = new StringBuilder();
         result.append("Total runs: " + totalCount + "\n");
-        result.append("\tPassed: " + passCount + " (" + passPct + "%)");
+        result.append("Passed: " + passCount + " (" + passPct + "%)");
         result.append("\tFailed: " + failCount + " (" + failPct + "%)");
         result.append("\tSkipped: " + skipCount + " (" + skipPct + "%)");
         return result.toString();
