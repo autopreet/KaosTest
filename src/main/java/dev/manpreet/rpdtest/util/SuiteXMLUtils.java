@@ -5,7 +5,6 @@ import dev.manpreet.rpdtest.RPDException;
 import dev.manpreet.rpdtest.dto.xml.Suite;
 import dev.manpreet.rpdtest.dto.xml.SuiteClass;
 import dev.manpreet.rpdtest.dto.xml.SuiteListener;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -40,20 +39,17 @@ public class SuiteXMLUtils {
     }
 
     public static boolean isSuiteValid(Suite suite) {
+        log.debug(suite.toString());
         if (suite.getName() == null && suite.getTest().getName() == null) {
             log.warn("None of suite name or test name was provided");
         }
-        if (suite.getTest() == null || suite.getTest().getClasses() == null) {
-            log.error("No tests specified");
-            return false;
-        }
-        if (suite.getTest().getClasses().getClasses() == null || suite.getTest().getClasses().getClasses().isEmpty()) {
+        if (suite.getTest() == null || suite.getTest().getClass_() == null || suite.getTest().getClass_().isEmpty()) {
             log.error("No tests specified");
             return false;
         }
         List<String> classCoordinates;
-        if (suite.getListeners() != null && suite.getListeners().getListener() != null && !suite.getListeners().getListener().isEmpty()) {
-            classCoordinates = suite.getListeners().getListener().stream().
+        if (suite.getListener() != null && !suite.getListener().isEmpty()) {
+            classCoordinates = suite.getListener().stream().
                     map(SuiteListener::getClassName).
                     collect(Collectors.toList());
             if (!areAllClassesValid(classCoordinates, "listener")) {
@@ -61,7 +57,7 @@ public class SuiteXMLUtils {
                 return false;
             }
         }
-        classCoordinates = suite.getTest().getClasses().getClasses().stream().
+        classCoordinates = suite.getTest().getClass_().stream().
                 map(SuiteClass::getName).
                 collect(Collectors.toList());
         return areAllClassesValid(classCoordinates, "test");
@@ -84,21 +80,26 @@ public class SuiteXMLUtils {
     }
 
     public static List<String> getAllTestClasses(Suite suite) {
-        return suite.getTest().getClasses().getClasses().stream().
+        return suite.getTest().getClass_().stream().
                 map(SuiteClass::getName).
                 collect(Collectors.toList());
     }
 
     public static List<String> getAllListenerClasses(Suite suite) {
-        return suite.getListeners().getListener().stream().
+        return suite.getListener().stream().
                 map(SuiteListener::getClassName).
                 collect(Collectors.toList());
     }
 
-    @SneakyThrows
-    public static List<Class> getClassFromName(List<String> classNames) {
-        List<Class> classes = new ArrayList<>();
-        classNames.forEach(name -> classes.add(Class.forName(name)));
+    public static List<Class<?>> getClassFromName(List<String> classNames) {
+        List<Class<?>> classes = new ArrayList<>();
+        classNames.forEach(name -> {
+            try {
+                classes.add(Class.forName(name));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
         return classes;
     }
 }

@@ -38,10 +38,12 @@ public class Runner {
 
     private RunnerStore getPrintResults() {
         RunnerStore runnerStore = RunnerStore.getRunnerStore();
-        StringBuilder testResult = new StringBuilder();
+        StringBuilder testResult = new StringBuilder("\n");
         for (TestStore eachTest: runnerStore.getTestStoreMap().values()) {
             testResult.append(eachTest.getTestName());
-            testResult.append("\n" + eachTest.toString() + "\n");
+            testResult.append("\n");
+            testResult.append(eachTest.toString());
+            testResult.append("\n");
         }
         testResult.append("\nOverall Summary:\n");
         testResult.append(runnerStore.toString());

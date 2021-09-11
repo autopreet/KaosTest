@@ -1,7 +1,7 @@
 package dev.manpreet.rpdtest.dto.internal;
 
 import dev.manpreet.rpdtest.RPDException;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Slf4j
 public class RunnerStore extends BaseStore {
 
     private Map<String, TestStore> testStoreMap;
@@ -40,9 +41,10 @@ public class RunnerStore extends BaseStore {
         tests.forEach(eachTest -> testStoreMap.put(eachTest, new TestStore(eachTest)));
     }
 
-    @SneakyThrows
-    public Class getRandomTest() {
-        String className = new ArrayList<>(testStoreMap.keySet()).get(ThreadLocalRandom.current().nextInt(storeSize));
+    public Class getRandomTest() throws ClassNotFoundException {
+        int randomIndex = ThreadLocalRandom.current().nextInt(storeSize);
+        String className = new ArrayList<>(testStoreMap.keySet()).get(randomIndex);
+        log.info("Returning random test class (" + className + ") at index (" + randomIndex + ")");
         return Class.forName(className);
     }
 
