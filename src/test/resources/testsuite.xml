@@ -1,14 +1,14 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Fallback Tests">
     <listeners>
-        <listener class-name="dev.manpreet.rpdtest.listeners.TestListener"/>
+        <listener class-name="dev.manpreet.kaostest.listeners.TestListener"/>
     </listeners>
 
-    <test name="RPD Cases">
+    <test name="Kaos Cases">
         <classes>
-            <class name="dev.manpreet.rpdtest.testclasses.TestClassA"/>
-            <class name="dev.manpreet.rpdtest.testclasses.TestClassB"/>
-            <class name="dev.manpreet.rpdtest.testclasses.more.TestClassC"/>
+            <class name="dev.manpreet.kaostest.testclasses.TestClassA"/>
+            <class name="dev.manpreet.kaostest.testclasses.TestClassB"/>
+            <class name="dev.manpreet.kaostest.testclasses.more.TestClassC"/>
         </classes>
     </test>
 </suite>
