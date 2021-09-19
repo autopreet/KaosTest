@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Maintains test statistics of the complete run and extends BaseStore to maintain these statistics at the top level.
+ * This is incremented by our built-in test listener and therefore is only available as a Singleton.
+ */
 @Slf4j
 public class RunnerStore extends BaseStore {
 
@@ -17,6 +21,11 @@ public class RunnerStore extends BaseStore {
     private final int storeSize;
     private static RunnerStore runnerStore;
 
+    /**
+     * Get an instance of the runner store. In case this is already initialized, the parameter won't have any effect.
+     * @param tests - the list of test classes that are going to be run
+     * @return RunnerStore
+     */
     public static RunnerStore getRunnerStore(List<String> tests) {
         if (runnerStore == null) {
             runnerStore = new RunnerStore(tests);
@@ -24,6 +33,10 @@ public class RunnerStore extends BaseStore {
         return runnerStore;
     }
 
+    /**
+     * Get an instance of the runner store when it is already initialized.
+     * @return
+     */
     public static RunnerStore getRunnerStore() {
         return runnerStore;
     }
@@ -34,6 +47,10 @@ public class RunnerStore extends BaseStore {
         storeSize = testStoreMap.size();
     }
 
+    /**
+     * Initialize the test store map with the list of test classes.
+     * @param tests - the list of test classes that are going to be run
+     */
     private void initTestStore(List<String> tests) {
         if (tests == null || tests.isEmpty()) {
             throw new KaosException("Tests list cannot be empty");

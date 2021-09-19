@@ -13,15 +13,29 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Our main API class that should be used.
+ */
 @Slf4j
 public class Runner {
 
+    /**
+     * Run the tests in the defined suite XML for 5 minutes in 10 threads
+     * @param suiteXmlPath - TestNG XML suite file
+     */
     public void runTests(String suiteXmlPath) {
         ThreadCountProvider threadCountProvider = new FixedThreadCountProvider(10);
         DurationProvider durationProvider = new FixedDurationProvider(5, TimeUnit.MINUTES);
         runTests(suiteXmlPath, threadCountProvider, durationProvider);
     }
 
+    /**
+     * Run the tests defined in the suite XML as per the provider configurations.
+     * @param suiteXmlPath - TestNG XML suite file
+     * @param threadCountProvider - Instance of thread count provider
+     * @param durationProvider - Instance of duration provider
+     * @return RunnerStore - Holds statistics about the complete execution
+     */
     public RunnerStore runTests(String suiteXmlPath, ThreadCountProvider threadCountProvider, DurationProvider durationProvider) {
 
         Suite suite = SuiteXMLUtils.deserializeSuiteXML(suiteXmlPath);

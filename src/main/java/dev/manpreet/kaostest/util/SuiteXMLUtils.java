@@ -14,8 +14,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Holder for some utility methods required to process the suite XML and the classes defined within.
+ */
 @Slf4j
 public class SuiteXMLUtils {
+
+    private SuiteXMLUtils() {}
 
     public static Suite deserializeSuiteXML(String xmlPath) {
         if (xmlPath == null || xmlPath.isBlank()) {

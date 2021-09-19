@@ -5,6 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 
+/**
+ * Built-in listener which increments the RunnerStore for each test execution.
+ */
 @Slf4j
 public class StoreIncrementListener extends TestListenerAdapter {
 

@@ -1,5 +1,8 @@
 package dev.manpreet.kaostest.dto.internal;
 
+/**
+ * Base store which will store the total execution time, total run count, pass run count, fail run count & skip count.
+ */
 public class BaseStore {
 
     private long execTimeMillis = 0;
@@ -48,6 +51,10 @@ public class BaseStore {
         incrementTotalCount(addedExecTime);
     }
 
+    /**
+     * Our rudimentary results printer
+     * @return
+     */
     @Override
     public String toString() {
         float passPct, failPct, skipPct;
