@@ -56,9 +56,12 @@ public class BaseStore {
         skipPct = (skipCount * 100.0f) / totalCount;
         StringBuilder result = new StringBuilder();
         result.append("Total runs: " + totalCount + "\n");
-        result.append("Passed: " + passCount + " (" + passPct + "%)");
-        result.append("\tFailed: " + failCount + " (" + failPct + "%)");
-        result.append("\tSkipped: " + skipCount + " (" + skipPct + "%)");
+        result.append("Passed: " + passCount + " (" + String.format("%.2f", passPct) + "%)");
+        result.append("\t\nFailed: " + failCount + " (" + String.format("%.2f", failPct) + "%)");
+        result.append("\t\nSkipped: " + skipCount + " (" + String.format("%.2f", skipPct) + "%)");
+        result.append("\t\nTotal execution time: " + String.format("%.2f", (execTimeMillis)/1000D) + " seconds");
+        result.append("\t\nAverage execution time: " + String.format("%.2f", (execTimeMillis/totalCount)/1000D) + " seconds");
+        result.append("\t\nAverage passed execution time: " + String.format("%.2f", (execTimeMillis/passCount)/1000D) + " seconds");
         return result.toString();
     }
 }
