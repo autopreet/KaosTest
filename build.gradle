@@ -1,9 +1,20 @@
-plugins {
-    id 'java'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+    }
 }
 
-group 'dev.manpreet'
-version '1.0'
+plugins {
+    id 'java'
+    id 'com.bmuschko.nexus' version '2.3.1'
+}
+
+archivesBaseName = 'kaostest'
+group = "dev.manpreet"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -23,4 +34,62 @@ dependencies {
 
 test {
     useTestNG()
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'KaosTest',
+                'Implementation-Version': '1.0'
+    }
+}
+
+task fatJar(type: Jar) {
+    version("1.0-uber")
+    manifest {
+        attributes 'Implementation-Title': 'KaosTest',
+                'Implementation-Version': '1.0'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+modifyPom {
+    project {
+        name 'kaostest'
+        description 'Run tests randomly in parallel'
+        url 'https://github.com/autopreet/kaostest'
+        inceptionYear '2020'
+
+        scm {
+            url 'https://github.com/autopreet/KaosTest'
+            connection 'scm:https://github.com/autopreet/KaosTest.git'
+            developerConnection 'scm:https://github.com/autopreet/KaosTest.git'
+        }
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'autopreet'
+                name 'Manpreet'
+                email 'manpreet.333@gmail.com'
+            }
+        }
+    }
+}
+
+extraArchive {
+    sources = true
+}
+
+nexus {
+    sign = true
+    repositoryUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+    snapshotRepositoryUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
 }
