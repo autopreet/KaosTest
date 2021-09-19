@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Implementation for the thread count provider to set the number of test runner threads. This basic implementation takes
- * a minCount & maxCount number and provides a random number between/equal to those two to set as the thread count.
+ * a minCount and maxCount number and provides a random number between/equal to those two to set as the thread count.
  */
 public class ThreadCountInRangeProvider extends PollingProvider implements ThreadCountProvider {
 

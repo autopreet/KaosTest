@@ -1,7 +1,7 @@
 package dev.manpreet.kaostest.dto.internal;
 
 /**
- * Base store which will store the total execution time, total run count, pass run count, fail run count & skip count.
+ * Base store which will store the total execution time, total run count, pass run count, fail run count and skip count.
  */
 public class BaseStore {
 
@@ -53,7 +53,7 @@ public class BaseStore {
 
     /**
      * Our rudimentary results printer
-     * @return
+     * @return Store summary
      */
     @Override
     public String toString() {

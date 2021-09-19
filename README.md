@@ -1,7 +1,7 @@
 # KaosTest
 
 Have you ever wanted to re-use your functional tests to put a load on your system but never found a good way? Well, I went through the same conundrum and ended up with KaosTest.
-The idea is pretty simple, as long as your test classes are atomic and are using the TestNG framework, we can run those test classes in N number of threads for a given duration.
+The idea is pretty simple, as long as your test classes are atomic and are using the TestNG framework, we can run those test classes randomly, in N number of threads for a given duration.
 
 ## Usage
 

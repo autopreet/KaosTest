@@ -35,7 +35,7 @@ public class RunnerStore extends BaseStore {
 
     /**
      * Get an instance of the runner store when it is already initialized.
-     * @return
+     * @return RunnerStore
      */
     public static RunnerStore getRunnerStore() {
         return runnerStore;
