@@ -5,12 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Implementation for duration provider to set the end time for the execution. This basic implementation takes a fixed
+ * time duration as input and once that time has passed, signals to the test executor to stop.
+ */
 @Slf4j
 public class FixedDurationProvider implements DurationProvider {
 
     private long remainingSecs = -1;
     private long prevTime;
 
+    /**
+     * Init the duration provider.
+     * @param time - Value for the time duration
+     * @param timeUnit - Unit for the time duration
+     */
     public FixedDurationProvider(int time, TimeUnit timeUnit) {
         if (timeUnit.equals(TimeUnit.MICROSECONDS) || timeUnit.equals(TimeUnit.MILLISECONDS) || timeUnit.equals(TimeUnit.NANOSECONDS)) {
             throw new IllegalArgumentException("Time unit must be in seconds or a higher unit");
@@ -18,6 +27,10 @@ public class FixedDurationProvider implements DurationProvider {
         setStartTime(time, timeUnit);
     }
 
+    /**
+     * Called by the test executor to determine whether to stop the tests.
+     * @return boolean - stop tests?
+     */
     @Override
     public boolean stopTests() {
         remainingSecs = remainingSecs - ((System.currentTimeMillis() - prevTime) / 1000);

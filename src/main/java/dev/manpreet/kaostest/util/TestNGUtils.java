@@ -9,6 +9,9 @@ import org.testng.TestNG;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+/**
+ * Holder for some utility methods for TestNG.
+ */
 @Slf4j
 public class TestNGUtils {
 

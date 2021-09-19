@@ -13,6 +13,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
+/**
+ * Main test executor
+ */
 @Slf4j
 public class TestRunnersManager {
 
@@ -24,9 +27,17 @@ public class TestRunnersManager {
     private final boolean isPollThreadCount;
     private final int waitFreqSecs;
 
+    /**
+     * Init the test executor
+     * @param threadCountProvider - Instance of thread count provider
+     * @param durationProvider - Instance of duration provider
+     * @param inputListeners - List of listeners defined in suite
+     */
     public TestRunnersManager(ThreadCountProvider threadCountProvider, DurationProvider durationProvider, List<String> inputListeners) {
         this.threadCountProvider = threadCountProvider;
         this.durationProvider = durationProvider;
+        //If the thread count provider is a polling provider, we want to use a cached thread pool and set main thread to wake up
+        //every poll # of seconds as defined in the provider.
         if (threadCountProvider instanceof PollingProvider) {
             isPollThreadCount = true;
             this.executorService = Executors.newCachedThreadPool();

@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Test runner thread which picks one test class at a time and runs it using the TestNG API.
+ */
 @Slf4j
 public class TestRunner implements Runnable {
 
@@ -18,6 +21,10 @@ public class TestRunner implements Runnable {
     private boolean isRun;
     private boolean isFinished;
 
+    /**
+     * Init the test runner
+     * @param inputListeners - List of listener classes to add to the test run
+     */
     public TestRunner(List<Class<?>> inputListeners) {
         this.inputListeners = inputListeners;
         this.runnerStore = RunnerStore.getRunnerStore();
@@ -50,6 +57,5 @@ public class TestRunner implements Runnable {
     public boolean isFinished() {
         return isFinished;
     }
-
 
 }
