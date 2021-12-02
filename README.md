@@ -1,5 +1,14 @@
 # KaosTest
 
+
+![Sonar Coverage](https://img.shields.io/sonar/coverage/autopreet_KaosTest/master?server=https%3A%2F%2Fsonarcloud.io)
+![GitHub last commit](https://img.shields.io/github/last-commit/autopreet/KaosTest)
+![GitHub all releases](https://img.shields.io/github/downloads/autopreet/KaosTest/total)
+
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/autopreet/KaosTest)
+![GitHub](https://img.shields.io/github/license/autopreet/KaosTest)
+![GitHub Repo stars](https://img.shields.io/github/stars/autopreet/KaosTest?style=social)
+
 Have you ever wanted to re-use your functional tests to put a load on your system but never found a good way? Well, I went through the same conundrum and ended up with KaosTest.
 The idea is pretty simple, as long as your test classes are atomic and are using the TestNG framework, we can run those test classes randomly, in N number of threads for a given duration.
 
