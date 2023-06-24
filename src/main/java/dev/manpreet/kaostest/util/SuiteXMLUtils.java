@@ -1,10 +1,11 @@
 package dev.manpreet.kaostest.util;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import dev.manpreet.kaostest.KaosException;
-import dev.manpreet.kaostest.dto.xml.Suite;
-import dev.manpreet.kaostest.dto.xml.SuiteClass;
-import dev.manpreet.kaostest.dto.xml.SuiteListener;
+import dev.manpreet.kaostest.dto.testng.suite.Suite;
+import dev.manpreet.kaostest.dto.testng.suite.SuiteClass;
+import dev.manpreet.kaostest.dto.testng.suite.SuiteListener;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -36,6 +37,7 @@ public class SuiteXMLUtils {
         }
         try {
             XmlMapper xmlMapper = new XmlMapper();
+            xmlMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
             return xmlMapper.readValue(xmlFile, Suite.class);
         } catch (IOException e) {
             log.error("Exception occurred while deserialising provided suite XML", e);
@@ -45,27 +47,28 @@ public class SuiteXMLUtils {
 
     public static boolean isSuiteValid(Suite suite) {
         log.debug(suite.toString());
-        if (suite.getName() == null && suite.getTest().getName() == null) {
-            log.warn("None of suite name or test name was provided");
-        }
-        if (suite.getTest() == null || suite.getTest().getClass_() == null || suite.getTest().getClass_().isEmpty()) {
-            log.error("No tests specified");
-            return false;
-        }
-        List<String> classCoordinates;
-        if (suite.getListener() != null && !suite.getListener().isEmpty()) {
-            classCoordinates = suite.getListener().stream().
-                    map(SuiteListener::getClassName).
-                    collect(Collectors.toList());
-            if (!areAllClassesValid(classCoordinates, "listener")) {
-                log.error("One of the listener classes specified is invalid");
-                return false;
-            }
-        }
-        classCoordinates = suite.getTest().getClass_().stream().
-                map(SuiteClass::getName).
-                collect(Collectors.toList());
-        return areAllClassesValid(classCoordinates, "test");
+//        if (suite.getName() == null && suite.getTest().getName() == null) {
+//            log.warn("None of suite name or test name was provided");
+//        }
+//        if (suite.getTest() == null || suite.getTest().getClass_() == null || suite.getTest().getClass_().isEmpty()) {
+//            log.error("No tests specified");
+//            return false;
+//        }
+//        List<String> classCoordinates;
+//        if (suite.getListener() != null && !suite.getListener().isEmpty()) {
+//            classCoordinates = suite.getListener().stream().
+//                    map(SuiteListener::getClassName).
+//                    collect(Collectors.toList());
+//            if (!areAllClassesValid(classCoordinates, "listener")) {
+//                log.error("One of the listener classes specified is invalid");
+//                return false;
+//            }
+//        }
+//        classCoordinates = suite.getTest().getClass_().stream().
+//                map(SuiteClass::getName).
+//                collect(Collectors.toList());
+//        return areAllClassesValid(classCoordinates, "test");
+        return true;
     }
 
     private static boolean areAllClassesValid(List<String> classNames, String classType) {
@@ -85,9 +88,10 @@ public class SuiteXMLUtils {
     }
 
     public static List<String> getAllTestClasses(Suite suite) {
-        return suite.getTest().getClass_().stream().
-                map(SuiteClass::getName).
-                collect(Collectors.toList());
+//        return suite.getTest().getClass_().stream().
+//                map(SuiteClass::getName).
+//                collect(Collectors.toList());
+        return new ArrayList<>();
     }
 
     public static List<String> getAllListenerClasses(Suite suite) {

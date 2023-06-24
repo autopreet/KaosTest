@@ -1,4 +1,4 @@
-package dev.manpreet.kaostest.dto.xml;
+package dev.manpreet.kaostest.dto.testng.suite;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;

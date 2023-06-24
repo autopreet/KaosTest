@@ -1,6 +1,5 @@
 package dev.manpreet.kaostest.runner;
 
-import dev.manpreet.kaostest.dto.internal.RunnerStore;
 import dev.manpreet.kaostest.util.TestNGUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TestRunner implements Runnable {
 
-    private final RunnerStore runnerStore;
+    //private final RunnerStore runnerStore;
     private final List<Class<?>> inputListeners;
     private boolean isRun;
     private boolean isFinished;
@@ -27,7 +26,7 @@ public class TestRunner implements Runnable {
      */
     public TestRunner(List<Class<?>> inputListeners) {
         this.inputListeners = inputListeners;
-        this.runnerStore = RunnerStore.getRunnerStore();
+        //this.runnerStore = RunnerStore.getRunnerStore();
         isRun = true;
         isFinished = false;
     }
@@ -35,17 +34,17 @@ public class TestRunner implements Runnable {
     @Override
     public void run() {
         TestNG testNG;
-        try {
+        //try {
             while (isRun) {
                 testNG = TestNGUtils.getTestNGInstance(inputListeners);
-                Class<?>[] classes = new Class[]{runnerStore.getRandomTest()};
-                log.info("Setting test classes: " + StringUtils.join(Arrays.stream(classes).map(Class::getName).collect(Collectors.toList())));
-                testNG.setTestClasses(classes);
+                //Class<?>[] classes = new Class[]{runnerStore.getRandomTest()};
+                //log.info("Setting test classes: " + StringUtils.join(Arrays.stream(classes).map(Class::getName).collect(Collectors.toList())));
+                //testNG.setTestClasses(classes);
                 testNG.run();
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
         isFinished = true;
     }
 

@@ -1,5 +1,8 @@
 # KaosTest
 
+## This project is under maintenance.
+### I am working on a complete refactoring before I add new features. Code is liable to be broken at this time.
+
 
 ![Sonar Coverage](https://img.shields.io/sonar/coverage/autopreet_KaosTest/master?server=https%3A%2F%2Fsonarcloud.io)
 ![GitHub last commit](https://img.shields.io/github/last-commit/autopreet/KaosTest)
