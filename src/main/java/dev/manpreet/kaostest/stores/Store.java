@@ -38,6 +38,10 @@ public class Store extends BaseStore {
         }
     }
 
+    public void clear() {
+        packagesData = new HashMap<>();
+    }
+
     private void addNewTestPackage(String testPackage, String testClass, String testMethod) {
         TestMethodData testMethodData = new TestMethodData(testMethod);
         TestClassData testClassData = new TestClassData(testClass);

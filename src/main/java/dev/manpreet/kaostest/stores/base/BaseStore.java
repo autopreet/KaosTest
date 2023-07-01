@@ -20,7 +20,7 @@ public class BaseStore {
     private double maxRuntimeMillis = 0;
     private double totalRuntimeMillis = 0;
     private double medianRuntimeMillis = 0;
-    private List<Double> runtimes;
+    private final List<Double> runtimes;
 
     public BaseStore(String name) {
         this.name = name;

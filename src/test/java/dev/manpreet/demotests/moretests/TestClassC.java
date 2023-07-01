@@ -1,11 +1,10 @@
-package dev.manpreet.kaostest.testclasses.more;
+package dev.manpreet.demotests.moretests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import dev.manpreet.kaostest.testclasses.TestClassA;
-import dev.manpreet.kaostest.testclasses.TestUtils;
+import dev.manpreet.demotests.utils.TestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
 import org.testng.annotations.Test;

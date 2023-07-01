@@ -23,7 +23,7 @@ public class TestRunnersManager {
     private final ThreadCountProvider threadCountProvider;
     private final DurationProvider durationProvider;
     private final List<TestRunner> testRunners;
-    private final List<Class<?>> inputListeners;
+    //private final List<Class<?>> inputListeners;
     private final boolean isPollThreadCount;
     private final int waitFreqSecs;
 
@@ -47,12 +47,12 @@ public class TestRunnersManager {
             this.executorService = Executors.newFixedThreadPool(threadCountProvider.getThreadCount());
             waitFreqSecs = 60;
         }
-        this.inputListeners = SuiteXMLUtils.getClassFromName(inputListeners);
+        //this.inputListeners = SuiteXMLUtils.getClassFromName(inputListeners);
         testRunners = new ArrayList<>();
     }
 
     public void runTests() {
-        IntStream.range(0, threadCountProvider.getThreadCount()).forEach(x -> scheduleRunner());
+       // IntStream.range(0, threadCountProvider.getThreadCount()).forEach(x -> scheduleRunner());
 
         while (!durationProvider.stopTests()) {
             sleep(waitFreqSecs);
@@ -79,7 +79,7 @@ public class TestRunnersManager {
             IntStream.range(0, difference).forEach(x -> removeRunner());
         } else if (currentCount < newThreadCount) {
             int difference = newThreadCount - currentCount;
-            IntStream.range(0, difference).forEach(x -> scheduleRunner());
+            //IntStream.range(0, difference).forEach(x -> scheduleRunner());
         }
     }
 
@@ -87,11 +87,11 @@ public class TestRunnersManager {
         return testRunners.stream().anyMatch(runner -> !runner.isFinished());
     }
 
-    private void scheduleRunner() {
-        TestRunner testRunner = new TestRunner(inputListeners);
-        testRunners.add(testRunner);
-        executorService.submit(testRunner);
-    }
+//    private void scheduleRunner() {
+//        TestRunner testRunner = new TestRunner(inputListeners);
+//        testRunners.add(testRunner);
+//        executorService.submit(testRunner);
+//    }
 
     private void removeRunner() {
         if (testRunners.size() > 0) {

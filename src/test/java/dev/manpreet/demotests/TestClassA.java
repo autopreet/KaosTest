@@ -1,21 +1,12 @@
-package dev.manpreet.kaostest.testclasses;
+package dev.manpreet.demotests;
 
+import dev.manpreet.demotests.utils.TestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.concurrent.TimeUnit;
-
 @Slf4j
 public class TestClassA {
-
-    public static void sleep() {
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException interruptedException) {
-            interruptedException.printStackTrace();
-        }
-    }
 
     @Test
     public void runPassingTest1() {

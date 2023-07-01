@@ -1,4 +1,4 @@
-package dev.manpreet.kaostest.testclasses;
+package dev.manpreet.demotests.utils;
 
 import lombok.extern.slf4j.Slf4j;
 

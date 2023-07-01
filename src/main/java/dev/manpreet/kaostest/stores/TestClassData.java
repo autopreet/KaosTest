@@ -7,10 +7,10 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class TestClassData extends BaseStore {
 
-    @Getter
-    private Map<String, TestMethodData> testMethodsData;
+    private final Map<String, TestMethodData> testMethodsData;
     private TestPackageData subscriber;
 
     public TestClassData(String name) {

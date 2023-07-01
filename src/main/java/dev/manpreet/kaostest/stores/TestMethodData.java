@@ -1,14 +1,16 @@
 package dev.manpreet.kaostest.stores;
 
 import dev.manpreet.kaostest.stores.base.BaseStore;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@Getter
 public class TestMethodData extends BaseStore {
 
-    private List<TestInstanceData> instancesData;
+    private final List<TestInstanceData> instancesData;
     private TestClassData subscriber;
 
     public TestMethodData(String name) {

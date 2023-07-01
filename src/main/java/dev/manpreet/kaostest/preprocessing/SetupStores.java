@@ -11,13 +11,16 @@ import java.util.stream.Collectors;
 
 public class SetupStores {
 
-    private Store store;
+    private final Store store;
 
     public SetupStores() {
         store = Store.getInstance();
     }
 
-    public void addTests(String packageOrClassName) {
+    public void addTests(String packageOrClassName, boolean isClass) {
+        if (isClass) {
+            packageOrClassName = packageOrClassName.substring(0, packageOrClassName.lastIndexOf("."));
+        }
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .forPackage(packageOrClassName)
                 .setScanners(Scanners.MethodsAnnotated));
@@ -25,11 +28,15 @@ public class SetupStores {
         Set<String> testMethodNames = testMethods.stream()
                 .map(method -> method.getDeclaringClass() + "." + method.getName())
                 .collect(Collectors.toSet());
+        testMethodNames.forEach(this::updateStore);
     }
 
     private void updateStore(String testMethodName) {
+        testMethodName = testMethodName.split(" ")[1];
         String testClassName = testMethodName.substring(0, testMethodName.lastIndexOf("."));
-        String testPackageName = testClassName.substring(9, testClassName.lastIndexOf("."));
+        testMethodName = testMethodName.substring(testMethodName.lastIndexOf(".") + 1);
+        String testPackageName = testClassName.substring(0, testClassName.lastIndexOf("."));
+        testClassName = testClassName.substring(testClassName.lastIndexOf(".") + 1);
         store.addNewTest(testPackageName, testClassName, testMethodName);
     }
 }

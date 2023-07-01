@@ -59,7 +59,7 @@ As an example from our test, your suite XML should look similar to the below in 
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Fallback Tests">
     <listeners>
-        <listener class-name="dev.manpreet.kaostest.listeners.TestListener"/>
+        <listener class-name="dev.manpreet.demotests.listeners.TestListener"/>
     </listeners>
 
     <test name="Kaos Cases">

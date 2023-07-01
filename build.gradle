@@ -36,6 +36,9 @@ dependencies {
 
 test {
     useTestNG()
+    filter {
+        excludeTestsMatching "dev.manpreet.demotests.*"
+    }
 }
 
 jacocoTestReport {
