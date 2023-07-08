@@ -92,7 +92,8 @@ public class TestSetupStores {
         assertNotNull(store.getPackagesData());
         System.out.println(store.getPackagesData());
         //Reflections library ends up loading the current tests in this class also as it scans current classloader
-        store.getPackagesData().remove("dev.manpreet.kaostest.preprocessing");
+        removeInternalPackages();
+        System.out.println(store.getPackagesData().values().stream().map(TestPackageData::getName));
         assertEquals(store.getPackagesData().size(), 2);
 
         TestPackageData demoTestPkg = assertPackageInStore("dev.manpreet.demotests");
@@ -141,5 +142,11 @@ public class TestSetupStores {
         assertNotNull(testMethodData.getSubscriber());
         assertEquals(testMethodData.getSubscriber(), testClassData);
         assertNotNull(testMethodData.getInstancesData());
+    }
+
+    private void removeInternalPackages() {
+        store.getPackagesData().remove("dev.manpreet.kaostest.preprocessing");
+        store.getPackagesData().remove("dev.manpreet.kaostest.providers.threadcount");
+        store.getPackagesData().remove("dev.manpreet.kaostest.providers.duration");
     }
 }

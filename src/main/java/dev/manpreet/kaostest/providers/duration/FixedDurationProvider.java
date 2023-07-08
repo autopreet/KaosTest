@@ -12,8 +12,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class FixedDurationProvider implements DurationProvider {
 
-    private long remainingSecs = -1;
-    private long prevTime;
+    private long durationSecs, startTime;
 
     /**
      * Init the duration provider.
@@ -21,7 +20,8 @@ public class FixedDurationProvider implements DurationProvider {
      * @param timeUnit - Unit for the time duration
      */
     public FixedDurationProvider(int time, TimeUnit timeUnit) {
-        if (timeUnit.equals(TimeUnit.MICROSECONDS) || timeUnit.equals(TimeUnit.MILLISECONDS) || timeUnit.equals(TimeUnit.NANOSECONDS)) {
+        if (timeUnit.equals(TimeUnit.MICROSECONDS) || timeUnit.equals(TimeUnit.MILLISECONDS) ||
+                timeUnit.equals(TimeUnit.NANOSECONDS)) {
             throw new IllegalArgumentException("Time unit must be in seconds or a higher unit");
         }
         setStartTime(time, timeUnit);
@@ -33,32 +33,23 @@ public class FixedDurationProvider implements DurationProvider {
      */
     @Override
     public boolean stopTests() {
-        remainingSecs = remainingSecs - ((System.currentTimeMillis() - prevTime) / 1000);
-        prevTime = System.currentTimeMillis();
-        log.info("Previous time: " + prevTime);
-        log.info("Remaining seconds: " + remainingSecs);
-        return remainingSecs <= 0;
+        long secondsElapsed = (System.currentTimeMillis() - startTime) / 1000;
+        long secondsRemaining = durationSecs - secondsElapsed;
+        log.info("Seconds elapsed: " + secondsElapsed);
+        log.info("Remaining seconds: " + secondsRemaining);
+        return secondsRemaining <= 0;
     }
 
-    public void setStartTime(int time, TimeUnit timeUnit) {
-        if (remainingSecs < 0) {
-            log.info("Setting start time");
-            switch (timeUnit) {
-                case SECONDS:
-                    remainingSecs = time;
-                    break;
-                case MINUTES:
-                    remainingSecs = time * 60L;
-                    break;
-                case HOURS:
-                    remainingSecs = time * 60L * 60L;
-                    break;
-                default:
-                    remainingSecs = time * 24L * 60L * 60L;
-            }
-            prevTime = System.currentTimeMillis();
-            log.info("Previous time: " + prevTime);
-            log.info("Remaining seconds: " + remainingSecs);
+    private void setStartTime(int time, TimeUnit timeUnit) {
+        log.info("Setting start time");
+        switch (timeUnit) {
+            case SECONDS -> durationSecs = time;
+            case MINUTES -> durationSecs = time * 60L;
+            case HOURS -> durationSecs = time * 60L * 60L;
+            default -> durationSecs = time * 24L * 60L * 60L;
         }
+        startTime = System.currentTimeMillis();
+        log.info("Start epoch: " + startTime);
+        log.info("Remaining seconds: " + durationSecs);
     }
 }
