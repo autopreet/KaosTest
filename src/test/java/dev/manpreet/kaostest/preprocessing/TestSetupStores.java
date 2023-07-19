@@ -148,5 +148,6 @@ public class TestSetupStores {
         store.getPackagesData().remove("dev.manpreet.kaostest.preprocessing");
         store.getPackagesData().remove("dev.manpreet.kaostest.providers.threadcount");
         store.getPackagesData().remove("dev.manpreet.kaostest.providers.duration");
+        store.getPackagesData().remove("dev.manpreet.kaostest.providers.testorder");
     }
 }
