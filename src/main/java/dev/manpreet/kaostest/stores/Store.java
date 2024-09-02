@@ -1,11 +1,14 @@
 package dev.manpreet.kaostest.stores;
 
+import dev.manpreet.kaostest.KaosException;
 import dev.manpreet.kaostest.stores.base.BaseStore;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class Store extends BaseStore {
 
     private static Store store;
@@ -36,6 +39,18 @@ public class Store extends BaseStore {
         if (!isExistingMethod(testPackage, testClass, testMethod)) {
             addNewTestMethod(testPackage, testClass, testMethod);
         }
+    }
+
+    public String getRandomTestClass() throws KaosException {
+        String packageName = packagesData.keySet().stream().findAny().orElse("");
+        String className = packagesData.get(packageName).getTestClassesData().keySet()
+                .stream().findAny().orElse("");
+        String fullClassName = packageName + className;
+        if (fullClassName.isBlank()) {
+            throw new KaosException("No packages found in the store");
+        }
+        log.debug("Returning random test class {}", fullClassName);
+        return fullClassName;
     }
 
     public void clear() {

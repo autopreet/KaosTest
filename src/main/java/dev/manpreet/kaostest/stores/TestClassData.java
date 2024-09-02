@@ -3,6 +3,7 @@ package dev.manpreet.kaostest.stores;
 import dev.manpreet.kaostest.stores.base.BaseStore;
 import dev.manpreet.kaostest.stores.base.Status;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
 public class TestClassData extends BaseStore {
 
     private final Map<String, TestMethodData> testMethodsData;
+    @Setter
     private TestPackageData subscriber;
 
     public TestClassData(String name) {
@@ -23,10 +25,6 @@ public class TestClassData extends BaseStore {
             testMethodsData.put(testMethodData.getName(), testMethodData);
             testMethodData.setSubscriber(this);
         }
-    }
-
-    public void setSubscriber(TestPackageData subscriber) {
-        this.subscriber = subscriber;
     }
 
     @Override
