@@ -86,9 +86,9 @@ public class SuiteXMLUtils {
     }
 
 //    public static List<String> getAllTestClasses(Suite suite) {
-////        return suite.getTest().getClass_().stream().
-////                map(SuiteClass::getName).
-////                collect(Collectors.toList());
+//        return suite.getTest().getClass_().stream().
+//                map(SuiteClass::getName).
+//                collect(Collectors.toList());
 //        return new ArrayList<>();
 //    }
 //
@@ -98,15 +98,15 @@ public class SuiteXMLUtils {
 //                collect(Collectors.toList());
 //    }
 //
-//    public static List<Class<?>> getClassFromName(List<String> classNames) {
-//        List<Class<?>> classes = new ArrayList<>();
-//        classNames.forEach(name -> {
-//            try {
-//                classes.add(Class.forName(name));
-//            } catch (ClassNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//        return classes;
-//    }
+    public static List<Class<?>> getClassFromName(List<String> classNames) {
+        List<Class<?>> classes = new ArrayList<>();
+        classNames.forEach(name -> {
+            try {
+                classes.add(Class.forName(name));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+        return classes;
+    }
 }

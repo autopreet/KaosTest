@@ -2,6 +2,7 @@ package dev.manpreet.kaostest.stores;
 
 import dev.manpreet.kaostest.stores.base.BaseStore;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class TestMethodData extends BaseStore {
 
     private final List<TestInstanceData> instancesData;
+    @Setter
     private TestClassData subscriber;
 
     public TestMethodData(String name) {
@@ -27,7 +29,4 @@ public class TestMethodData extends BaseStore {
         super.addNewInstance(runtimeMillis, testInstanceData.getStatus());
     }
 
-    public void setSubscriber(TestClassData subscriber) {
-        this.subscriber = subscriber;
-    }
 }
