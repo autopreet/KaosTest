@@ -1,6 +1,6 @@
 package dev.manpreet.kaostest.providers.testorder;
 
-import dev.manpreet.kaostest.KaosException;
+import dev.manpreet.kaostest.exception.KaosException;
 import dev.manpreet.kaostest.providers.TestOrderProvider;
 
 import java.util.ArrayList;

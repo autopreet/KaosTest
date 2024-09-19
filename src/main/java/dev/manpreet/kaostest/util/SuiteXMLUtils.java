@@ -2,7 +2,7 @@ package dev.manpreet.kaostest.util;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import dev.manpreet.kaostest.KaosException;
+import dev.manpreet.kaostest.exception.KaosException;
 import dev.manpreet.kaostest.dto.testng.suite.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -85,19 +85,6 @@ public class SuiteXMLUtils {
         }
     }
 
-//    public static List<String> getAllTestClasses(Suite suite) {
-//        return suite.getTest().getClass_().stream().
-//                map(SuiteClass::getName).
-//                collect(Collectors.toList());
-//        return new ArrayList<>();
-//    }
-//
-//    public static List<String> getAllListenerClasses(Suite suite) {
-//        return suite.getListener().stream().
-//                map(SuiteListener::getClassName).
-//                collect(Collectors.toList());
-//    }
-//
     public static List<Class<?>> getClassFromName(List<String> classNames) {
         List<Class<?>> classes = new ArrayList<>();
         classNames.forEach(name -> {

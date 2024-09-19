@@ -1,6 +1,6 @@
 package dev.manpreet.kaostest.stores;
 
-import dev.manpreet.kaostest.KaosException;
+import dev.manpreet.kaostest.exception.KaosException;
 import dev.manpreet.kaostest.stores.base.BaseStore;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
