@@ -4,19 +4,18 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import dev.manpreet.kaostest.util.SuiteXMLUtils;
+import dev.manpreet.testutils.TestUtils;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 //Also tests dev.manpreet.kaostest.util.SuiteXMLUtils.deserializeSuiteXML
 public class TestNGXmlSuiteDeserializationTest {
 
     @Test
-    public void testSuiteClassesOnly() {
-        Suite suite = SuiteXMLUtils.deserializeSuiteXML(getFilePath("testsuite_classes.xml"));
+    public void multipleSuitesClassesOnly() {
+        Suite suite = SuiteXMLUtils.deserializeSuiteXML(TestUtils.getFilePath("testsuite_classes.xml"));
         assertEquals(suite.getName(), "Demo Tests");
         Map<String, List<String>> suiteTestClasses = getSuiteTestClasses(suite.getTests());
         Map<String, List<String>> suiteTestPackages = getSuiteTestPackages(suite.getTests());
@@ -30,12 +29,83 @@ public class TestNGXmlSuiteDeserializationTest {
         assertEquals(classes.size(), 2);
         assertTrue(classes.contains("dev.manpreet.demotests.TestClassA"));
         assertTrue(classes.contains("dev.manpreet.demotests.moretests.TestClassC"));
+        validateListeners(suite);
     }
 
-    private String getFilePath(String filename) {
-        URL resource = getClass().getClassLoader().getResource(filename);
-        File file = Paths.get(resource.getPath()).toFile();
-        return file.getAbsolutePath();
+    @Test
+    public void multipleSuitesClassesAndPackages() {
+        Suite suite = SuiteXMLUtils.deserializeSuiteXML(TestUtils.getFilePath("testsuite_classes_packages.xml"));
+        assertEquals(suite.getName(), "Demo Tests");
+        Map<String, List<String>> suiteTestClasses = getSuiteTestClasses(suite.getTests());
+        Map<String, List<String>> suiteTestPackages = getSuiteTestPackages(suite.getTests());
+        assertEquals(suiteTestClasses.size(), 1);
+        assertEquals(suiteTestPackages.size(), 1);
+        Set<String> classes = new HashSet<>(suiteTestClasses.get("Demo Kaos Classes"));
+        assertEquals(classes.size(), 2);
+        assertTrue(classes.contains("dev.manpreet.demotests.TestClassA"));
+        assertTrue(classes.contains("dev.manpreet.demotests.TestClassB"));
+        Set<String> packages = new HashSet<>(suiteTestPackages.get("Demo Kaos Packages"));
+        assertEquals(packages.size(), 1);
+        assertTrue(packages.contains("dev.manpreet.demotests.moretests"));
+        validateListeners(suite);
+    }
+
+    @Test
+    public void multipleSuitesPackagesOnly() {
+        Suite suite = SuiteXMLUtils.deserializeSuiteXML(TestUtils.getFilePath("testsuite_packages.xml"));
+        assertEquals(suite.getName(), "Demo Tests");
+        Map<String, List<String>> suiteTestClasses = getSuiteTestClasses(suite.getTests());
+        Map<String, List<String>> suiteTestPackages = getSuiteTestPackages(suite.getTests());
+        assertTrue(suiteTestClasses.isEmpty());
+        assertEquals(suiteTestPackages.size(), 2);
+        Set<String> packages = new HashSet<>(suiteTestPackages.get("Demo Kaos Packages"));
+        assertEquals(packages.size(), 1);
+        assertTrue(packages.contains("dev.manpreet.demotests"));
+        packages = new HashSet<>(suiteTestPackages.get("More Demo Kaos Packages"));
+        assertEquals(packages.size(), 2);
+        assertTrue(packages.contains("dev.manpreet.demotests"));
+        assertTrue(packages.contains("dev.manpreet.demotests.moretests"));
+        validateListeners(suite);
+    }
+
+    @Test
+    public void singleSuiteClasses() {
+        Suite suite = SuiteXMLUtils.deserializeSuiteXML(TestUtils.getFilePath("testsuite_singletest_classes.xml"));
+        assertEquals(suite.getName(), "Demo Tests");
+        Map<String, List<String>> suiteTestClasses = getSuiteTestClasses(suite.getTests());
+        Map<String, List<String>> suiteTestPackages = getSuiteTestPackages(suite.getTests());
+        assertTrue(suiteTestPackages.isEmpty());
+        assertEquals(suiteTestClasses.size(), 1);
+        Set<String> classes = new HashSet<>(suiteTestClasses.get("Demo Kaos Classes"));
+        assertEquals(classes.size(), 3);
+        assertTrue(classes.contains("dev.manpreet.demotests.TestClassA"));
+        assertTrue(classes.contains("dev.manpreet.demotests.TestClassB"));
+        assertTrue(classes.contains("dev.manpreet.demotests.moretests.TestClassC"));
+        validateListeners(suite);
+    }
+
+    @Test
+    public void singleSuitePackages() {
+        Suite suite = SuiteXMLUtils.deserializeSuiteXML(TestUtils.getFilePath("testsuite_singletest_packages.xml"));
+        assertEquals(suite.getName(), "Demo Tests");
+        Map<String, List<String>> suiteTestClasses = getSuiteTestClasses(suite.getTests());
+        Map<String, List<String>> suiteTestPackages = getSuiteTestPackages(suite.getTests());
+        assertTrue(suiteTestClasses.isEmpty());
+        assertEquals(suiteTestPackages.size(), 1);
+        Set<String> classes = new HashSet<>(suiteTestPackages.get("Demo Kaos Packages"));
+        assertEquals(classes.size(), 2);
+        assertTrue(classes.contains("dev.manpreet.demotests"));
+        assertTrue(classes.contains("dev.manpreet.demotests.moretests"));
+        validateListeners(suite);
+    }
+
+    private void validateListeners(Suite suite) {
+        Set<String> listeners = suite.getListener().stream()
+                .map(SuiteListener::getClassName)
+                .collect(Collectors.toSet());
+        assertEquals(listeners.size(), 2);
+        assertTrue(listeners.contains("dev.manpreet.demotests.listeners.TestListener"));
+        assertTrue(listeners.contains("dev.manpreet.demotests.listeners.AnotherListener"));
     }
 
     private Map<String, List<String>> getSuiteTestClasses(List<SuiteTest> suiteTests) {
