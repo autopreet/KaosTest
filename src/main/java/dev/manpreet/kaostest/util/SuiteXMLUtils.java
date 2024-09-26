@@ -91,7 +91,8 @@ public class SuiteXMLUtils {
             try {
                 classes.add(Class.forName(name));
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                throw new KaosException("Listener class with name " + name + " was not found. Exception: " +
+                        e.getMessage());
             }
         });
         return classes;

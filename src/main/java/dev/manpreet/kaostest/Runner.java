@@ -6,14 +6,20 @@ import dev.manpreet.kaostest.dto.testng.suite.SuiteListener;
 import dev.manpreet.kaostest.dto.testng.suite.SuitePackage;
 import dev.manpreet.kaostest.preprocessing.SetupStores;
 import dev.manpreet.kaostest.providers.DurationProvider;
+import dev.manpreet.kaostest.providers.TestOrderProvider;
 import dev.manpreet.kaostest.providers.ThreadCountProvider;
 import dev.manpreet.kaostest.providers.duration.FixedDurationProvider;
+import dev.manpreet.kaostest.providers.testorder.RandomTestOrderProvider;
+import dev.manpreet.kaostest.providers.testorder.SortedTestOrderProvider;
+import dev.manpreet.kaostest.providers.testorder.dto.OrderType;
 import dev.manpreet.kaostest.providers.threadcount.FixedThreadCountProvider;
 import dev.manpreet.kaostest.runner.TestRunnersManager;
 import dev.manpreet.kaostest.stores.Store;
+import dev.manpreet.kaostest.util.StoreUtils;
 import dev.manpreet.kaostest.util.SuiteXMLUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,7 +35,7 @@ public class Runner {
     public void runTests(String suiteXmlPath) {
         ThreadCountProvider threadCountProvider = new FixedThreadCountProvider(10);
         DurationProvider durationProvider = new FixedDurationProvider(5, TimeUnit.MINUTES);
-        runTests(suiteXmlPath, threadCountProvider, durationProvider);
+        runTests(suiteXmlPath, threadCountProvider, durationProvider, OrderType.RANDOM);
     }
 
     /**
@@ -40,7 +46,7 @@ public class Runner {
      * @return Store - Holds statistics about the complete execution
      */
     public Store runTests(String suiteXmlPath, ThreadCountProvider threadCountProvider,
-                          DurationProvider durationProvider) {
+                          DurationProvider durationProvider, OrderType testOrderType) {
         Suite suite = SuiteXMLUtils.deserializeSuiteXML(suiteXmlPath);
         SuiteXMLUtils.validateSuite(suite);
         //Initialize runner store
@@ -54,8 +60,11 @@ public class Runner {
             suite.getAllTestClasses().stream().map(SuiteClass::getName)
                     .forEach(eachClass -> setupStores.addTests(eachClass, true));
         }
+        List<String> allClasses = StoreUtils.getAllClasses();
+        TestOrderProvider testOrderProvider = testOrderType == OrderType.RANDOM ?
+                new RandomTestOrderProvider(allClasses) : new SortedTestOrderProvider(allClasses);
         TestRunnersManager testRunnersManager = new TestRunnersManager(threadCountProvider, durationProvider,
-                suite.getListener().stream().map(SuiteListener::getClassName).toList());
+                testOrderProvider, suite.getListener().stream().map(SuiteListener::getClassName).toList());
         testRunnersManager.runTests();
         //return getPrintResults();
         return store;

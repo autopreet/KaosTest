@@ -41,18 +41,6 @@ public class Store extends BaseStore {
         }
     }
 
-    public String getRandomTestClass() throws KaosException {
-        String packageName = packagesData.keySet().stream().findAny().orElse("");
-        String className = packagesData.get(packageName).getTestClassesData().keySet()
-                .stream().findAny().orElse("");
-        String fullClassName = packageName + className;
-        if (fullClassName.isBlank()) {
-            throw new KaosException("No packages found in the store");
-        }
-        log.debug("Returning random test class {}", fullClassName);
-        return fullClassName;
-    }
-
     public void clear() {
         packagesData = new HashMap<>();
     }

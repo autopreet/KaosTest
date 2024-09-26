@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Demo Tests">
+    <listeners>
+        <listener class-name="dev.manpreet.demotests.listeners.TestListener"/>
+        <listener class-name="dev.manpreet.demotests.listeners.AnotherListener"/>
+    </listeners>
+
+    <test name="Demo Kaos Classes">
+        <classes>
+        </classes>
+    </test>
+
+    <test name="Demo Kaos Packages">
+        <packages>
+        </packages>
+    </test>
+</suite>
