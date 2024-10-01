@@ -8,13 +8,16 @@ import dev.manpreet.kaostest.stores.TestClassData;
 import dev.manpreet.kaostest.stores.TestMethodData;
 import dev.manpreet.kaostest.stores.TestPackageData;
 import dev.manpreet.kaostest.util.SuiteXMLUtils;
+import dev.manpreet.testutils.TestUtils;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -24,8 +27,6 @@ public class TestSetupStores {
 
     private final Store store = Store.getInstance();
     private final SetupStores setupStores = new SetupStores();
-    private final String resourcesPath = Paths.get(System.getProperty("user.dir"), "src", "test", "resources")
-            .toString();
     private Suite suite;
 
     @AfterMethod
@@ -35,35 +36,35 @@ public class TestSetupStores {
 
     @Test
     public void testStoreSetupWithClassesAndPackagesInSuite() {
-        updateStore(Paths.get(resourcesPath, "testsuite_classes_packages.xml").toString());
+        updateStore(TestUtils.getFilePath("testsuite_classes_packages.xml"));
         assertListeners();
         assertStore();
     }
 
     @Test
     public void testStoreSetupWithClassesOnlyInSuite() {
-        updateStore(Paths.get(resourcesPath, "testsuite_classes.xml").toString());
+        updateStore(TestUtils.getFilePath("testsuite_classes.xml"));
         assertListeners();
         assertStore();
     }
 
     @Test
     public void testStoreSetupWithPackagesOnlyInSuite() {
-        updateStore(Paths.get(resourcesPath, "testsuite_packages.xml").toString());
+        updateStore(TestUtils.getFilePath("testsuite_packages.xml"));
         assertListeners();
         assertStore();
     }
 
     @Test
     public void testStoreSetupWithClassesOnlyInOneTestSuite() {
-        updateStore(Paths.get(resourcesPath, "testsuite_singletest_classes.xml").toString());
+        updateStore(TestUtils.getFilePath("testsuite_singletest_classes.xml"));
         assertListeners();
         assertStore();
     }
 
     @Test
     public void testStoreSetupWithPackagesOnlyInOneTestSuite() {
-        updateStore(Paths.get(resourcesPath, "testsuite_singletest_packages.xml").toString());
+        updateStore(TestUtils.getFilePath("testsuite_singletest_packages.xml"));
         assertListeners();
         assertStore();
     }
@@ -145,9 +146,8 @@ public class TestSetupStores {
     }
 
     private void removeInternalPackages() {
-        store.getPackagesData().remove("dev.manpreet.kaostest.preprocessing");
-        store.getPackagesData().remove("dev.manpreet.kaostest.providers.threadcount");
-        store.getPackagesData().remove("dev.manpreet.kaostest.providers.duration");
-        store.getPackagesData().remove("dev.manpreet.kaostest.providers.testorder");
+        Set<String> internalPackages = store.getPackagesData().keySet().stream()
+                .filter(eachPkg -> eachPkg.contains("kaostest")).collect(Collectors.toSet());
+        internalPackages.forEach(eachPkg -> store.getPackagesData().remove(eachPkg));
     }
 }

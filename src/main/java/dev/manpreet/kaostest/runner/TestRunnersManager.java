@@ -2,6 +2,7 @@ package dev.manpreet.kaostest.runner;
 
 import dev.manpreet.kaostest.providers.DurationProvider;
 import dev.manpreet.kaostest.providers.PollingProvider;
+import dev.manpreet.kaostest.providers.TestOrderProvider;
 import dev.manpreet.kaostest.providers.ThreadCountProvider;
 import dev.manpreet.kaostest.util.SuiteXMLUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class TestRunnersManager {
     private final ThreadCountProvider threadCountProvider;
     private final DurationProvider durationProvider;
     private final List<TestRunner> testRunners;
+    private final TestOrderProvider testOrderProvider;
     private final List<Class<?>> inputListeners;
     private final boolean isPollThreadCount;
     private final int waitFreqSecs;
@@ -33,9 +35,11 @@ public class TestRunnersManager {
      * @param durationProvider - Instance of duration provider
      * @param inputListeners - List of listeners defined in suite
      */
-    public TestRunnersManager(ThreadCountProvider threadCountProvider, DurationProvider durationProvider, List<String> inputListeners) {
+    public TestRunnersManager(ThreadCountProvider threadCountProvider, DurationProvider durationProvider,
+                              TestOrderProvider testOrderProvider, List<String> inputListeners) {
         this.threadCountProvider = threadCountProvider;
         this.durationProvider = durationProvider;
+        this.testOrderProvider = testOrderProvider;
         //If the thread count provider is a polling provider, we want to use a cached thread pool and set main thread to wake up
         //every poll # of seconds as defined in the provider.
         if (threadCountProvider instanceof PollingProvider) {
@@ -88,7 +92,7 @@ public class TestRunnersManager {
     }
 
     private void scheduleRunner() {
-        TestRunner testRunner = new TestRunner(inputListeners);
+        TestRunner testRunner = new TestRunner(inputListeners, testOrderProvider);
         testRunners.add(testRunner);
         executorService.submit(testRunner);
     }

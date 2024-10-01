@@ -5,16 +5,16 @@
         <listener class-name="dev.manpreet.demotests.listeners.AnotherListener"/>
     </listeners>
 
-    <test name="Demo Kaos Packages">
-        <packages>
-            <package name="dev.manpreet.demotests"/>
-        </packages>
+    <test name="Demo Kaos Classes">
+        <classes>
+            <class name=""/>
+            <class name="dev.manpreet.demotests.TestClassB"/>
+        </classes>
     </test>
 
-    <test name="More Demo Kaos Packages">
+    <test name="Demo Kaos Packages">
         <packages>
             <package name="dev.manpreet.demotests.moretests"/>
-            <package name="dev.manpreet.demotests"/>
         </packages>
     </test>
 </suite>

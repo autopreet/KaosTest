@@ -1,4 +1,4 @@
-package dev.manpreet.kaostest;
+package dev.manpreet.kaostest.exception;
 
 public class KaosException extends RuntimeException {
 

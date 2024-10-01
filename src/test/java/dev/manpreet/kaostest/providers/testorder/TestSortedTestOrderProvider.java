@@ -23,8 +23,13 @@ public class TestSortedTestOrderProvider {
     @Test
     public void testSortedOrderProvider() {
         TestOrderProvider testOrderProvider = new SortedTestOrderProvider(inputTestClasses);
-        for (int i=0; i<inputTestClasses.size(); i++) {
-            Assert.assertEquals(testOrderProvider.getNextTest(), expectedTestClasses.get(i));
+        int index = 0;
+        for (int i=0; i<2; i++) {
+            Assert.assertEquals(testOrderProvider.getNextTest(), expectedTestClasses.get(index));
+            index++;
+            if (index == inputTestClasses.size()) {
+                index = 0;
+            }
         }
     }
 }

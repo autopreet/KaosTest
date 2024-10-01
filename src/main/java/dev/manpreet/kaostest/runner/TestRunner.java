@@ -1,5 +1,6 @@
 package dev.manpreet.kaostest.runner;
 
+import dev.manpreet.kaostest.providers.TestOrderProvider;
 import dev.manpreet.kaostest.stores.Store;
 import dev.manpreet.kaostest.util.TestNGUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ public class TestRunner implements Runnable {
 
     private final Store runnerStore;
     private final List<Class<?>> inputListeners;
+    private final TestOrderProvider testOrderProvider;
     private boolean isRun;
     private boolean isFinished;
 
@@ -22,8 +24,9 @@ public class TestRunner implements Runnable {
      * Init the test runner
      * @param inputListeners - List of listener classes to add to the test run
      */
-    public TestRunner(List<Class<?>> inputListeners) {
+    public TestRunner(List<Class<?>> inputListeners, TestOrderProvider testOrderProvider) {
         this.inputListeners = inputListeners;
+        this.testOrderProvider = testOrderProvider;
         this.runnerStore = Store.getInstance();
         isRun = true;
         isFinished = false;
@@ -32,19 +35,14 @@ public class TestRunner implements Runnable {
     @Override
     public void run() {
         TestNG testNG;
-        try {
-            while (isRun) {
-                testNG = TestNGUtils.getTestNGInstance(inputListeners);
-                String nextFullTestClassName = runnerStore.getRandomTestClass();
-                Class<?>[] testClasses = new Class[1];
-                testClasses[0] = Class.forName(nextFullTestClassName);
-                testNG.setTestClasses(testClasses);
-                testNG.run();
-            }
-            isFinished = true;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        while (isRun) {
+            testNG = TestNGUtils.getTestNGInstance(inputListeners);
+            Class<?>[] testClasses = new Class[1];
+            testClasses[0] = testOrderProvider.getNextTest();
+            testNG.setTestClasses(testClasses);
+            testNG.run();
         }
+        isFinished = true;
     }
 
         public void stop() {
